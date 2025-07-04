@@ -3,6 +3,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $json = $_POST['tree'];
     $title = $_POST['title'] ?? '';
     $tree = json_decode($json, true);
+    $id = $_POST['id'] ?? null;
 
         $id = $_POST['id'] ?? null;
 
