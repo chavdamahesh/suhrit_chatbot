@@ -4,13 +4,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'] ?? '';
     $tree = json_decode($json, true);
 
+        $id = $_POST['id'] ?? null;
+
     try {
-        $pdo = new PDO("mysql:host=localhost;dbname=chatbot", "root", "root");
+        $pdo = new PDO("mysql:host=localhost;dbname=chatbot","root");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $pdo->prepare("INSERT INTO option_trees (title, tree_data) VALUES (:title, :data)");
-        $stmt->bindParam(':title', $title);
-        $stmt->bindParam(':data', $json);
+        if ($id) {
+            // Update existing
+            $stmt = $pdo->prepare("UPDATE option_trees SET title = :title, tree_data = :data WHERE id = :id");
+            $stmt->bindParam(':title', $title);
+            $stmt->bindParam(':data', $json);
+            $stmt->bindParam(':id', $id);
+        } else {
+            // Insert new
+            $stmt = $pdo->prepare("INSERT INTO option_trees (title, tree_data) VALUES (:title, :data)");
+            $stmt->bindParam(':title', $title);
+            $stmt->bindParam(':data', $json);
+        }
 
         if ($stmt->execute()) {
             echo json_encode(['status' => 'success']);
