@@ -1,6 +1,6 @@
 <?php
 try {
-    $pdo = new PDO("mysql:host=localhost;dbname=chatbot", "root", "root");
+    $pdo = new PDO("mysql:host=localhost;dbname=chatbot", "root", "");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     if (isset($_GET['id'])) {
@@ -17,4 +17,3 @@ try {
     http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]);
 }
-?>
